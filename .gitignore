@@ -1,0 +1,4 @@
+*.gdb/
+*.mxd
+*.tbx
+csv_output/
