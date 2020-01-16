@@ -83,6 +83,10 @@ else:
     arcpy.AddMessage("INRIX_query_string = " + INRIX_query_string)
 # end_if
 
+# Path to "base directory" in which the GDB containing the input Model Links feature class resides
+# and in which all output files are written
+base_dir = r'\\lilliput\groups\Data_Resources\conflate-tmcs-and-model'
+
 
 # INPUT DATA: INRIX TMCs, CTPS model links, MassDOT LRSN_Routes 
 #
@@ -93,8 +97,7 @@ INRIX_MASSACHUSETTS_TMC_2019 = r'\\lindalino\users\Public\Documents\Public ArcGI
 INRIX_TMCS = "INRIX_TMCS"
 
 # CTPS model links
-# *** TBD: FIX THIS !!!
-CTPS_Model_Links_FC = "\\\\lilliput\\bkrepp\\data\\_conflate_model_and_tmcs\\model_links.gdb\\Statewide_Model_Links"
+CTPS_Model_Links_FC = base_dir + '\model_links.gdb\Statewide_Model_Links'
 # Layer containing selected CTPS model links
 CTPS_Model_Links = "CTPS_Model_Links"
 
@@ -113,28 +116,29 @@ base_table_name = MassDOT_route_id.lower().replace(' ','_')
 tmc_event_table_name = base_table_name + "_events_tmc"
 links_event_table_name = base_table_name + "_events_links"
 
-overlay_event_table_1_name = base_table_name + "_events_overlay_1"
+overlay_event_table_name = base_table_name + "_events_overlay"
 
 output_event_table_name = base_table_name + "_events_output"
 output_csv_file_name = base_table_name + "_events_output.csv"
 
+
 # Full paths of geodatabases in which event tables are written
 #
-tmc_event_table_gdb = "\\\\lilliput\\bkrepp\\data\\_conflate_model_and_tmcs\\tmc_events.gdb"
-links_event_table_gdb = "\\\\lilliput\\bkrepp\\data\\_conflate_model_and_tmcs\\links_events.gdb"
-overlay_events_1_gdb = "\\\\lilliput\\bkrepp\\data\\_conflate_model_and_tmcs\\\overlay_1.gdb"
-output_events_gdb = "\\\\lilliput\\bkrepp\\data\\_conflate_model_and_tmcs\\output_prep.gdb"
+tmc_event_table_gdb = base_dir + "\\tmc_events.gdb"
+links_event_table_gdb = base_dir + "\\links_events.gdb"
+overlay_events_gdb = base_dir + "\\overlay.gdb"
+output_events_gdb = base_dir + "\\output_prep.gdb"
 
 # Full path of directory in which output CSV file is written
 # 
-output_csv_dir = "\\\\lilliput\\bkrepp\\data\\_conflate_model_and_tmcs\\csv_output"
+output_csv_dir = base_dir + "\csv_output"
 
 
 # Full paths of generated event tables
 #
 tmc_event_table = tmc_event_table_gdb + "\\" + tmc_event_table_name 
 links_event_table = links_event_table_gdb + "\\" + links_event_table_name
-overlay_events_1 = overlay_events_1_gdb + "\\" + overlay_event_table_1_name
+overlay_events = overlay_events_gdb + "\\" + overlay_event_table_name
 output_event_table = output_events_gdb + "\\" + output_event_table_name 
 
 # Full path of generated output CSV file
@@ -143,8 +147,8 @@ output_csv = output_csv_dir + "\\" + output_csv_file_name
 
 
 
-# Name of "table view" created of overlay_events_1 (see below)
-overlay_events_1_View = "overlay_event_table_1_View"
+# Name of "table view" created of overlay_events_ (see below)
+overlay_events_View = "overlay_event_table_View"
 # Name of "table view" created of output_event_table (see below)
 output_event_table_View = "output_event_table_View"
 
@@ -185,34 +189,34 @@ arcpy.AddMessage("Generating overlay.")
 # HERE: tmc_event_table and links_event_table have been generated.
 #       Generate overlay #1.
 # Overlay Route Events: inputs: tmc_events, links_events
-#                       output: overlay_events_1
-overlay_event_table_1_properties = "route_id LINE from_meas to_meas"
+#                       output: overlay_events
+overlay_event_table_properties = "route_id LINE from_meas to_meas"
 arcpy.OverlayRouteEvents_lr(tmc_event_table, "route_id LINE from_meas to_meas", 
                             links_event_table, "route_id LINE from_meas to_meas", "UNION", 
-                            overlay_events_1, overlay_event_table_1_properties, "NO_ZERO", "FIELDS", "INDEX")
+                            overlay_events, overlay_event_table_properties, "NO_ZERO", "FIELDS", "INDEX")
 
 # Rename two fields in the overlay table to make their meanings clearer:
 #   lenmiles ==> tmc_lenmiles  (length, in miles, of the ENTIRE TMC)
 #   LENGTH   ==> link_lenmiles (length, in miles, of the ENTIRE model link)
-arcpy.AlterField_management(overlay_events_1, 'lenmiles', 'tmc_lenmiles')
-arcpy.AlterField_management(overlay_events_1, 'LENGTH', 'link_lenmiles')
+arcpy.AlterField_management(overlay_events, 'lenmiles', 'tmc_lenmiles')
+arcpy.AlterField_management(overlay_events, 'LENGTH', 'link_lenmiles')
 
-# Make Table View of overlay_events_1
-arcpy.MakeTableView_management(overlay_events_1, overlay_events_1_View) 
+# Make Table View of overlay_events
+arcpy.MakeTableView_management(overlay_events, overlay_events_View) 
 
 # Roads and Highways allows (among other things) events with measure values < 0. In particular, we are concerned with from_measure values < 0.
 # Clean these up by setting the relevant from_measures to 0.
 #
-# Select records in overlay_events_1 with from_meas < 0, set the from_meas of these records to 0, and clear selection
-arcpy.SelectLayerByAttribute_management(overlay_events_1_View, "NEW_SELECTION", "from_meas < 0")
-arcpy.CalculateField_management(overlay_events_1_View, "from_meas", "0.0", "PYTHON_9.3", "")
-arcpy.SelectLayerByAttribute_management(overlay_events_1_View, "CLEAR_SELECTION", "")
+# Select records in overlay_events with from_meas < 0, set the from_meas of these records to 0, and clear selection
+arcpy.SelectLayerByAttribute_management(overlay_events_View, "NEW_SELECTION", "from_meas < 0")
+arcpy.CalculateField_management(overlay_events_View, "from_meas", "0.0", "PYTHON_9.3", "")
+arcpy.SelectLayerByAttribute_management(overlay_events_View, "CLEAR_SELECTION", "")
 
 # Sort the table in ascending order on from _meas, and add a "calc_len" (calculated length) field to each record, 
 # and calculate its value appropriately.
-# Sort overlay_events_1 on from_meas, in ascending order
+# Sort overlay_events on from_meas, in ascending order
 # output is in output_event_table
-arcpy.Sort_management(overlay_events_1_View, output_event_table, "from_meas ASCENDING;tmc ASCENDING", "UR")
+arcpy.Sort_management(overlay_events_View, output_event_table, "from_meas ASCENDING;tmc ASCENDING", "UR")
 
 arcpy.AddMessage("Generating output event table.")
 
@@ -287,4 +291,4 @@ with open(open_fn, 'wb') as csvfile:
     # for
 # with
 
-arcpy.AddMessage("*** Finished CSV export for: " + MassDOT_route_id + ". Final output is in: " + output_csv_dir_2 + "\\" + output_csv_file_name_2)
+arcpy.AddMessage("*** Finished CSV export for: " + MassDOT_route_id + ". Final output is in: " + output_csv_dir + "\\" + output_csv_file_name)
