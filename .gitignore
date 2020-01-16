@@ -1,8 +1,5 @@
 *.gdb/
 *.mxd
 *.tbx
-<<<<<<< HEAD
 csv_output/
-=======
-csv_output/
->>>>>>> e5f7a8cd62a59bfede10d2c95222fb72106648b8
+
