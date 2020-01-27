@@ -97,7 +97,7 @@ INRIX_MASSACHUSETTS_TMC_2019 = r'\\lindalino\users\Public\Documents\Public ArcGI
 INRIX_TMCS = "INRIX_TMCS"
 
 # CTPS model links
-CTPS_Model_Links_FC = base_dir + '\model_links.gdb\Statewide_Model_Links'
+CTPS_Model_Links_FC = base_dir + '\model_links.gdb\Statewide_Model_Links_EPSG26986_augmented'
 # Layer containing selected CTPS model links
 CTPS_Model_Links = "CTPS_Model_Links"
 
