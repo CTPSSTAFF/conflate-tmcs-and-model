@@ -22,7 +22,7 @@
 import arcpy
 import csv
 
-# Map MassDOT route_id into INRIX 'roadnum' and INRIX 'direction'
+# Translate MassDOT route_id into INRIX 'roadnum' and INRIX 'direction'
 def get_inrix_attrs(MassDOT_route_id):
     # return value
     retval = { 'roadnum' : '', 'direction' : '' }
@@ -46,6 +46,13 @@ def get_inrix_attrs(MassDOT_route_id):
     # end_if
     retval['roadnum'] = roadnum
     direction = massdot_to_inrix_direction[pieces[1]]
+    # HACK: Handle INRIX incorrectly regarding I-291 as a NB/SB rather than an EB/WB route.
+    if roadnum == 'I-291':
+        if direction == 'Eastbound':
+            direction = 'Northbound'
+        else:
+            direction = 'Southbound'
+    # end_if (HACK)
     retval['direction'] = direction
     return retval
 # def get_inrix_attrs()
@@ -121,7 +128,6 @@ overlay_event_table_name = base_table_name + "_events_overlay"
 output_event_table_name = base_table_name + "_events_output"
 output_csv_file_name = base_table_name + "_events_output.csv"
 
-
 # Full paths of geodatabases in which event tables are written
 #
 tmc_event_table_gdb = base_dir + "\\tmc_events.gdb"
@@ -133,7 +139,6 @@ output_events_gdb = base_dir + "\\output_prep.gdb"
 # 
 output_csv_dir = base_dir + "\csv_output"
 
-
 # Full paths of generated event tables
 #
 tmc_event_table = tmc_event_table_gdb + "\\" + tmc_event_table_name 
@@ -144,8 +149,6 @@ output_event_table = output_events_gdb + "\\" + output_event_table_name
 # Full path of generated output CSV file
 #
 output_csv = output_csv_dir + "\\" + output_csv_file_name
-
-
 
 # Name of "table view" created of overlay_events_ (see below)
 overlay_events_View = "overlay_event_table_View"
@@ -177,7 +180,7 @@ arcpy.AddMessage("Generating model link events.")
 # Make Feature Layer "CTPS_Model_Links": from CTPS_Model_Links_FC, select model links using the INRIX_query_string
 arcpy.MakeFeatureLayer_management(CTPS_Model_Links_FC, CTPS_Model_Links, Model_Links_FC_query_string)
 
-# Locate Features Along Routes: locate selected TMCs along selected MassDOT route
+# Locate Features Along Routes: locate selected model links along selected MassDOT route
 # Output is: links_event_table
 links_event_table_properties = "route_id LINE from_meas to_meas"
 arcpy.LocateFeaturesAlongRoutes_lr(CTPS_Model_Links, Selected_LRSN_Route, "route_id", "40 Meters", links_event_table, links_event_table_properties, 
