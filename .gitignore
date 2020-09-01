@@ -5,3 +5,5 @@
 csv_output/
 Model_Links_Shapefile/
 Deliverable_CSVs/
+*.xlsx
+*.xls
