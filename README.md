@@ -48,20 +48,20 @@ the EPSG:26986 SRS ('Mass State Plane, NAD83, meters) and stored the result in f
 2. This feature class has been 'augmented' by adding fields named __route\_numb__, __route\_dir__, and __route\_id__ to it, into which the
    correspondingly-named attributes from the Road Inventory __LRSN_Routes__ feature class have been harvested. __The means by which these fields were harvested in 2020 is TBD.__
 3. The user has created following empty geodatabases for storing intermediate results produced by running this script
-  1. __tmc_events.gdb__
-  2. __links_events.gdb__
-  3. __overlay.gdb__
-  4. __output_prep.gdb__
+    1. __tmc_events.gdb__
+    2. __links_events.gdb__
+    3. __overlay.gdb__
+    4. __output_prep.gdb__
 4. The user has created an empty output folder for the final CSV output files named __csv_output__.
 
 ### TDM23 - this is a work in progress.
 1. Model Links in the feature class __model_links.gdb\links__ - see note above under 'Input Model Links' for TDM23.
   * Note that this feature class should use the EPSG:26986 SRS ('Mass State Plane, NAD 83, meters')
 2. The user has created following geodatabases for storing intermediate results:
-  1. __tmc_events.gdb__
-  2. __links_events.gdb__
-  3. __overlay.gdb__ 
-  4. __output_prep.gdb__
+    1. __tmc_events.gdb__
+    2. __links_events.gdb__
+    3. __overlay.gdb__ 
+    4. __output_prep.gdb__
 3. The user has created an output folder for the final CSV output files named __csv_output__.
   
 The creation of the 'empty' geodatabases and folder could be moved into a separate 'initialization' script.
