@@ -66,3 +66,16 @@ the EPSG:26986 SRS ('Mass State Plane, NAD83, meters) and stored the result in f
   
 The creation of the 'empty' geodatabases and folder could be moved into a separate 'initialization' script.
 However, given that this tool was intended to be 'run once' on each route - and thus requires 'setup' only onece - the value automating this didn't seem worthwhile.
+
+## Algorithm
+The approach implemented by this tool is to use the MassDOT Road Inventory __route system__ as a common 'backbone'
+against which the INRIX TMCs and the Model Network links can be located. 
+
+The algorithm proceeds as follows:
+1. select the features from the INRIX TMC feature class for the specified route
+2. locate these features against the MassDOT route system feature for the specified route
+3. select the features from the model links feature class for the specified route
+4. locate these features againt the MassDOT route system feature for the specified route
+5. overlay (i.e., intersect) the results of \(2\) and \(4\)
+
+This script makes extensive of the ESRI tools __Locate Features Along Routes__ and __Overlay Route Events__.
