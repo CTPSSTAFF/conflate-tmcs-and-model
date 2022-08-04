@@ -46,7 +46,21 @@ the EPSG:26986 SRS ('Mass State Plane, NAD83, meters) and stored the result in f
 ### TDM19
 1. Model links reprojected to EPSG:26986, as described above, and stored in the feature class __model_links.gdb\Statewide_Model_Links_EPSG26986__.
 2. This feature class has been 'augmented' by adding fields named __route\_numb__, __route\_dir__, and __route\_id__ to it, into which the
-   correspondingly-named attributes from the Road Inventory __LRSN_Routes__ feature class have been harvested. __The means by which these fields were harvested in 2020 is TBD.__
+   correspondingly-named attributes from the Road Inventory __LRSN_Routes__ feature class have been harvested. The means by which these fields were harvested in 2020 is as follows:
+```
+	for each MassDOT route_id:
+		select all records with SCEN_00_FU == 1 in Model links feature class
+		select record with route_id == specified MassDOT route_id in MassDOT_LRSN_Routes FC
+		Spatial Join:
+			target_features = model links FC
+			join_features = MassDOT_LRSN_Routes FC
+			keep_all_target_features = False
+			how = HAVE_THEIR_CENTER_IN
+			search_radius = 2 meters
+			in field_map of join_features: specify (at least) route_id
+	# end_for
+	Use ESRI 'merge' tool to merge all the individual FC's created above into a single FC 'Statewide_Model_Links_EPSG26986__augmented'
+```
 3. The user has created following empty geodatabases for storing intermediate results produced by running this script
     1. __tmc_events.gdb__
     2. __links_events.gdb__
