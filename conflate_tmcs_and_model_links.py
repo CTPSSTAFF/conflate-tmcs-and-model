@@ -17,6 +17,7 @@
 #     2. csv
 #
 # Ben Krepp 01/07/2020-01/16/2020
+# Updated for TDM23 08/04/2022
 # ---------------------------------------------------------------------------
 
 import arcpy
@@ -92,24 +93,27 @@ else:
 
 # Path to "base directory" in which the GDB containing the input Model Links feature class resides
 # and in which all output files are written
-base_dir = r'\\lilliput\groups\Data_Resources\conflate-tmcs-and-model'
+base_dir = r'\\lilliput\groups\Data_Resources\conflate-tmcs-and-tdm23'
 
 
 # INPUT DATA: INRIX TMCs, CTPS model links, MassDOT LRSN_Routes 
 #
 # INRIX TMCs 
-INRIX_MASSACHUSETTS_TMC_2019 = r'\\lindalino\users\Public\Documents\Public ArcGIS\CTPS data from database servers for ITS\SDE 10.6.sde\mpodata.mpodata.INRIX_MASSACHUSETTS_TMC_2019'
+# INRIX_MASSACHUSETTS_TMC_2019 = r'\\lindalino2\users\Public\Documents\Public ArcGIS\CTPS data from database servers for ITS\SDE 10.6.sde\mpodata.mpodata.INRIX_MASSACHUSETTS_TMC_2019'
+INRIX_MASSACHUSETTS_TMC_2019 = r'\\lindalino2\public\Public ArcGIS\Database Connections\CTPS 10.6.sde\mpodata.mpodata.INRIX_MASSACHUSETTS_TMC_2019'
+
 
 # Layer containing TMCs selected from the above
 INRIX_TMCS = "INRIX_TMCS"
 
-# CTPS model links
-CTPS_Model_Links_FC = base_dir + '\model_links.gdb\Statewide_Model_Links_EPSG26986_augmented'
+# CTPS TDM model links - each feature record augmented with field to indicate MassDOT Road Inventory 'route_id'
+CTPS_Model_Links_FC = base_dir + '\model_links.gdb\links_augmented'
 # Layer containing selected CTPS model links
 CTPS_Model_Links = "CTPS_Model_Links"
 
 # MassDOT LRSN_Routes
-MASSDOT_LRSN_Routes_19Dec2019 = r'\\lindalino\users\Public\Documents\Public ArcGIS\CTPS data from database servers for ITS\SDE 10.6.sde\mpodata.mpodata.CTPS_RoadInventory_for_INRIX_2019\mpodata.mpodata.MASSDOT_LRSN_Routes_19Dec2019'
+# MASSDOT_LRSN_Routes_19Dec2019 = r'\\lindalino2\users\Public\Documents\Public ArcGIS\CTPS data from database servers for ITS\SDE 10.6.sde\mpodata.mpodata.CTPS_RoadInventory_for_INRIX_2019\mpodata.mpodata.MASSDOT_LRSN_Routes_19Dec2019'
+MASSDOT_LRSN_Routes_19Dec2019 = r'\\lindalino2\public\Public ArcGIS\Database Connections\CTPS 10.6.sde\mpodata.mpodata.CTPS_RoadInventory_for_INRIX_2019\mpodata.mpodata.MASSDOT_LRSN_Routes_19Dec2019'
 
 # Layer containing route selected from the above
 Selected_LRSN_Route = "Selected LRSN Route"
