@@ -2,8 +2,6 @@
 
 Tool to conflate INRIX TMCs and CTPS Model Links
 
-This version is intended for use with the model links file produced by TDM23.
-
 ## Usage
 Usage: conflate_tmcs_and_model_link MassDOT_route_id \[list_of_tmcs_file\]
   1. MassDOT_route_id is required
