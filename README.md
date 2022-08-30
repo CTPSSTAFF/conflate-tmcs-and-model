@@ -32,7 +32,7 @@ In any event, in order to make the model links usable in the conflation process,
 * that feature class was first projected to the EPSG:4326 ('WGS84', a.k.a. 'lat/lng') SRS
 * and then projected to the EPSG:26986 ('Mass State Plane, NAD83, meters) SRS.
 
-### TDM23 - this is a work in progress
+### TDM23
 The TMD23 model links are delivered in a shapefile stored in Google Drive - J:\Shared drives\TMD_TSA\Model\platform\outputs\FullRun\_networks\links.shp.
 All of the 'pieces' of this shapefile are downloaded and stored in the subfolder 'Model_Links_Shapefile', in order to be run by this script: ESRI tools
 don't work well (really, don't work at all) with Google Drive data sources.
@@ -66,7 +66,7 @@ the EPSG:26986 SRS ('Mass State Plane, NAD83, meters) and stored the result in f
     4. __output_prep.gdb__
 4. The user has created an empty output folder for the final CSV output files named __csv_output__.
 
-### TDM23 - this is a work in progress.
+### TDM23
 1. Model Links in the feature class __model_links.gdb\links__ - see note above under 'Input Model Links' for TDM23.
   * Note that this feature class should use the EPSG:26986 SRS ('Mass State Plane, NAD 83, meters')
 2. The user has created following geodatabases for storing intermediate results:
