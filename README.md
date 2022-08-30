@@ -67,14 +67,15 @@ the EPSG:26986 SRS ('Mass State Plane, NAD83, meters) and stored the result in f
 4. The user has created an empty output folder for the final CSV output files named __csv_output__.
 
 ### TDM23
-1. Model Links in the feature class __model_links.gdb\links__ - see note above under 'Input Model Links' for TDM23.
+1. Model Links in the feature class __model_links.gdb\links__.
   * Note that this feature class should use the EPSG:26986 SRS ('Mass State Plane, NAD 83, meters')
-2. The user has created following geodatabases for storing intermediate results:
+2. Model links augmented with MassDOT route_id attribute in the feature class  __model_links.gdb\links\_augmented__, as described above.
+3. The user has created following geodatabases for storing intermediate results:
     1. __tmc_events.gdb__
     2. __links_events.gdb__
     3. __overlay.gdb__ 
     4. __output_prep.gdb__
-3. The user has created an output folder for the final CSV output files named __csv_output__.
+4. The user has created an output folder for the final CSV output files named __csv_output__.
   
 The creation of the 'empty' geodatabases and folder could be moved into a separate 'initialization' script.
 However, given that this tool was intended to be 'run once' on each route - and thus requires 'setup' only onece - the value automating this didn't seem worthwhile.
