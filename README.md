@@ -69,13 +69,27 @@ the EPSG:26986 SRS ('Mass State Plane, NAD83, meters) and stored the result in f
 ### TDM23
 1. Model Links in the feature class __model_links.gdb\links__.
   * Note that this feature class should use the EPSG:26986 SRS ('Mass State Plane, NAD 83, meters')
-2. Model links augmented with MassDOT route_id attribute in the feature class  __model_links.gdb\links\_augmented__, as described above.
-3. The user has created following geodatabases for storing intermediate results:
+2. Model links augmented with MassDOT route_id attribute in the feature class  __model_links.gdb\links\_augmented__. The processing here is analagous to that for the TDM19 model links:
+```
+	for each MassDOT route_id:
+		select all records with FUNC_CLASS == 1 in Model links feature class
+		select record with route_id == specified MassDOT route_id in MassDOT_LRSN_Routes FC
+		Spatial Join:
+			target_features = model links FC
+			join_features = MassDOT_LRSN_Routes FC
+			keep_all_target_features = False
+			how = HAVE_THEIR_CENTER_IN
+			search_radius = 2 meters
+			in field_map of join_features: specify (at least) route_id
+	# end_for
+	Use ESRI 'merge' tool to merge all the individual FC's created above into a single FC 'Statewide_Model_Links_EPSG26986__augmented'
+```
+4. The user has created following geodatabases for storing intermediate results:
     1. __tmc_events.gdb__
     2. __links_events.gdb__
     3. __overlay.gdb__ 
     4. __output_prep.gdb__
-4. The user has created an output folder for the final CSV output files named __csv_output__.
+5. The user has created an output folder for the final CSV output files named __csv_output__.
   
 The creation of the 'empty' geodatabases and folder could be moved into a separate 'initialization' script.
 However, given that this tool was intended to be 'run once' on each route - and thus requires 'setup' only onece - the value automating this didn't seem worthwhile.
