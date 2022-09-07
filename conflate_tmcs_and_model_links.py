@@ -100,7 +100,7 @@ base_dir = r'\\lilliput\groups\Data_Resources\conflate-tmcs-and-tdm23'
 #
 # INRIX TMCs 
 # INRIX_MASSACHUSETTS_TMC_2019 = r'\\lindalino2\users\Public\Documents\Public ArcGIS\CTPS data from database servers for ITS\SDE 10.6.sde\mpodata.mpodata.INRIX_MASSACHUSETTS_TMC_2019'
-INRIX_MASSACHUSETTS_TMC_2019 = r'\\lindalino2\public\Public ArcGIS\Database Connections\CTPS 10.6.sde\mpodata.mpodata.INRIX_MASSACHUSETTS_TMC_2019'
+INRIX_MASSACHUSETTS_TMC_2019 = r'\\lindalino2\public\Public ArcGIS\Database Connections\Reference data.sde\mpodata.mpodata.INRIX_MASSACHUSETTS_TMC_2019'
 
 
 # Layer containing TMCs selected from the above
@@ -113,7 +113,7 @@ CTPS_Model_Links = "CTPS_Model_Links"
 
 # MassDOT LRSN_Routes
 # MASSDOT_LRSN_Routes_19Dec2019 = r'\\lindalino2\users\Public\Documents\Public ArcGIS\CTPS data from database servers for ITS\SDE 10.6.sde\mpodata.mpodata.CTPS_RoadInventory_for_INRIX_2019\mpodata.mpodata.MASSDOT_LRSN_Routes_19Dec2019'
-MASSDOT_LRSN_Routes_19Dec2019 = r'\\lindalino2\public\Public ArcGIS\Database Connections\CTPS 10.6.sde\mpodata.mpodata.CTPS_RoadInventory_for_INRIX_2019\mpodata.mpodata.MASSDOT_LRSN_Routes_19Dec2019'
+MASSDOT_LRSN_Routes_19Dec2019 = r'\\lindalino2\public\Public ArcGIS\Database Connections\Reference data.sde\mpodata.mpodata.CTPS_RoadInventory_for_INRIX_2019\mpodata.mpodata.MASSDOT_LRSN_Routes_19Dec2019'
 
 # Layer containing route selected from the above
 Selected_LRSN_Route = "Selected LRSN Route"
